@@ -1,0 +1,842 @@
+package com.testCase;
+
+import java.io.File;
+import java.math.BigDecimal;
+import java.net.URL;
+import java.text.DecimalFormat;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
+
+import com.testCase.WaitUtils.OnWaitForByListener;
+import com.test.jdbc.JDBCutil;
+import com.test.utils.DriverUtil;
+
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;   
+public class testCase1 {
+	private AndroidDriver<WebElement> driver;
+	 //private AppiumDriver driver;  
+	
+	File app;
+
+	@Before
+	public void setUp() throws Exception {
+		// 设置apk的路径
+		File classpathRoot = new File(System.getProperty("user.dir"));
+		File appDir = new File(classpathRoot, "apps");
+		app = new File(appDir, "GSB_1001.apk");
+
+		// 设置自动化相关参数
+		DesiredCapabilities capabilities = new DesiredCapabilities();
+		capabilities.setCapability(CapabilityType.BROWSER_NAME, "");
+		capabilities.setCapability("platformName", "Android");
+		capabilities.setCapability("deviceName", "m5");
+
+		// 设置安卓系统版本
+		capabilities.setCapability("platformVersion", "5.0");
+		// 设置apk路径
+		capabilities.setCapability("app", app.getAbsolutePath());
+
+		// 设置app的主包名和主类名
+		capabilities.setCapability("appPackage", "com.gaoshoubang");
+		capabilities.setCapability("appActivity", "com.gaoshoubang.activity.WelcomeActivity");
+
+		// 初始化
+		driver = new AndroidDriver<WebElement>(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
+		//driver = new AppiumDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
+		// driver2 = new RemoteWebDriver(new
+		// URL("http://127.0.0.1:4723/wd/hub"), capabilities);
+		// driver2=new RemoteWebDriver(capabilities);
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		driver.quit();
+	}
+
+	@Test
+	public void Test_01() throws Exception {
+		Thread.sleep(2000);
+		// DriverUtil.swipeScreen(600.00, 100.00, 100.00, 100.00, 1000, 1,
+		// driver);
+		// Thread.sleep(2000);
+		DriverUtil.swipeScreen(600.00, 100.00, 100.00, 100.00, 1000, 1, driver);
+		Thread.sleep(2000);
+		DriverUtil.swipeScreen(600.00, 100.00, 100.00, 100.00, 1000, 1, driver);
+		Thread.sleep(2000);
+		DriverUtil.swipeScreen(600.00, 100.00, 100.00, 100.00, 1000, 1, driver);
+		Thread.sleep(2000);
+		boolean a1 = true;
+		while (a1) {
+			if (driver.getPageSource().contains("立即体验"))
+
+				a1 = false;
+
+			else
+				DriverUtil.swipeScreen(600.00, 100.00, 100.00, 100.00, 1000, 1, driver);
+
+		}
+
+		driver.findElementById("iv_next").click();
+		Thread.sleep(2000);
+		driver.findElementById("login_phone").sendKeys("186 9999 1291");// 已注册用户登录
+		Thread.sleep(2000);
+		// driver.findElementById("register_agreement_check").click();//取消勾选我同意
+		// Thread.sleep(2000);
+		driver.findElementById("login_next").click();
+		Thread.sleep(2000);
+		driver.findElementById("login_pwd").sendKeys("222222");// 输入登录密码
+		Thread.sleep(2000);
+		driver.findElementById("login_pwd_btn").click();
+		Thread.sleep(2000);
+		if (driver.getPageSource().contains("跳过")) {
+			System.out.print("登录成功");
+		} else {
+			System.out.print("登录失败");
+		}
+		Thread.sleep(2000);
+
+	}
+
+	@Test
+	public void Test_02() throws Exception {
+		String test="Test_02()注册";
+		Thread.sleep(2000);
+		DriverUtil.swipeScreen(600.00, 100.00, 100.00, 100.00, 1000, 1, driver);
+		Thread.sleep(2000);
+		DriverUtil.swipeScreen(600.00, 100.00, 100.00, 100.00, 1000, 1, driver);
+		Thread.sleep(2000);
+		DriverUtil.swipeScreen(600.00, 100.00, 100.00, 100.00, 1000, 1, driver);
+		Thread.sleep(2000);
+		
+		/*
+		WaitUtils.waitForVisible(driver, By.id("iv_next"), 30);
+		
+		
+		
+		WaitUtils.waitForVisible(driver, By.id(""), 30,new OnWaitForByListener() {
+			@Override
+			public void success() {
+				
+			}
+			
+			@Override
+			public void fail() {
+				
+			}
+			
+		});
+		
+		
+		
+		WaitUtils.waitForVisible(driver, By.id("iv_next"), 10, new OnWaitForByListener() {
+
+			@Override
+			public void success() {
+				System.out.println(test+"成功");
+			}
+
+			@Override
+			public void fail() {
+				System.out.println(test+"失败");
+			}
+		},true);
+*/
+         
+		
+		DriverUtil.swipeScreen(600.00, 100.00, 100.00, 100.00, 1000, 1, driver);
+		Thread.sleep(2000);
+
+		driver.findElementById("iv_next").click();
+
+		Thread.sleep(2000);
+		driver.findElementById("login_phone").sendKeys("186 7777 1293");// 用户注册
+		Thread.sleep(2000);
+		driver.findElementById("login_next").click();
+		Thread.sleep(2000);
+
+		String phone = "18677771293";
+		JDBCutil mJDBCutil = new JDBCutil();
+		String rm = mJDBCutil.getRm(phone);
+		Thread.sleep(5000);// 获取验证码
+
+		driver.findElementById("reg_code").sendKeys(rm);
+		Thread.sleep(2000);
+		driver.findElementById("reg_pwd").sendKeys("222222");
+		Thread.sleep(2000);
+		driver.findElementById("reg_rcmder").sendKeys("1899135");// 填入高手码
+		Thread.sleep(2000);
+		driver.hideKeyboard();
+		Thread.sleep(1000);// 收起键盘
+		driver.findElementById("reg_next").wait(300000);
+		driver.findElementById("reg_next").click();
+		Thread.sleep(4000);
+		if (driver.getPageSource().contains("跳过")) {
+			System.out.print("注册成功");
+		} else {
+			System.out.print("注册失败");
+		}
+		Thread.sleep(2000);
+		driver.findElementById("tv_cancel").click();
+		Thread.sleep(2000);
+	}
+
+	@Test
+	// 用例3，测试投资流程
+	public void test_03() throws Exception {
+		Thread.sleep(2000);
+		DriverUtil.swipeScreen(600.00, 100.00, 100.00, 100.00, 1000, 1, driver);
+		Thread.sleep(2000);
+		DriverUtil.swipeScreen(600.00, 100.00, 100.00, 100.00, 1000, 1, driver);
+		Thread.sleep(2000);
+		DriverUtil.swipeScreen(600.00, 100.00, 100.00, 100.00, 1000, 1, driver);
+		Thread.sleep(2000);
+		DriverUtil.swipeScreen(600.00, 100.00, 100.00, 100.00, 1000, 1, driver);
+		Thread.sleep(2000);// 启动页滑屏
+		boolean s1 = true;
+
+		while (s1) {
+			if (driver.getPageSource().contains("立即体验"))
+
+				s1 = false;
+
+			else
+				DriverUtil.swipeScreen(600.00, 100.00, 100.00, 100.00, 1000, 1, driver);
+
+		}
+
+		driver.findElementById("iv_next").click();
+
+		// driver.findElementById("iv_next").click();
+		Thread.sleep(2000);
+		driver.findElementById("login_phone").sendKeys("186 9999 1291");// 已注册用户登录
+		Thread.sleep(2000);
+		// driver.findElementById("register_agreement_check").click();//取消勾选我同意
+		// Thread.sleep(2000);
+		driver.findElementById("login_next").click();
+		Thread.sleep(2000);
+		driver.findElementById("login_pwd_btn").click();
+		Thread.sleep(2000);
+		if (driver.getPageSource().contains("跳过")) {
+			System.out.print("登录成功");
+		} else {
+			System.out.print("登录失败");
+		}
+		Thread.sleep(2000);
+		driver.findElementById("tv_cancel").click();
+		Thread.sleep(3000);
+		driver.findElementById("menu_product").click();
+		Thread.sleep(2000);
+		String proN = "";
+		JDBCutil mJDBCutil = new JDBCutil();
+		String pid = mJDBCutil.getpid(proN);
+		Thread.sleep(5000);// 获取产品名称
+		driver.findElementByXPath("//android.widget.TextView[contains(@text,'" + pid + "')]").click();
+		// driver.findElementByXPath("//android.widget.TextView[contains(@text,'信托宝•灵动3374期')]").click();
+		System.out.println(pid);
+		// driver.findElementByName(pid).click();
+		// Thread.sleep(10000);//点击具体产品,因为appium不稳定暂时不使用该方法，不要删掉该代码2
+		// public static void clickScreen(int x, int y, int duration) {
+		// JavascriptExecutor js = (JavascriptExecutor) drivers;
+		// HashMap<String, Integer> tapObject = new HashMap<String, Integer>();
+		// tapObject.put("x", x);
+		// tapObject.put("y", y);
+		// tapObject.put("duration", duration);
+		// js.executeScript("mobile: tap", tapObject);
+		// }
+
+		// driver.tap(1, 100, 600, 100);// 通过坐标点击产品坐标
+		Thread.sleep(10000);
+		
+		// driver.switchTo().window("webview");//切换H5
+		// Thread.sleep(3000);
+		// driver.findElementById("html/body/i/div/footer/input").sendKeys("2000");
+		// 配置 webdriver 并启动 webview 应用。
+		// DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
+		// desiredCapabilities.setCapability("device", "Selendroid");
+		// File classpathRoot = new File(System.getProperty("user.dir"));
+		// File appDir = new File(classpathRoot, "apps");
+		// File app = new File(appDir, "GSB_3.4.0_test.apk");
+		// desiredCapabilities.setCapability("app",app.getAbsolutePath());
+		// capabilities.setCapability("app", app.getAbsolutePath());
+		// URL url = new URL("http://127.0.0.1:4723/wd/hub");
+		// RemoteWebDriver remoteWebDriver = new RemoteWebDriver(url,
+		// desiredCapabilities);
+
+		// 配置 webdriver 并启动 webview 应用。
+		// DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
+		// desiredCapabilities.setCapability("app", app.getAbsolutePath());
+		// desiredCapabilities.setCapability("device", "Galaxy Note3 SM-N9006");
+		// URL url = new URL("http://127.0.0.1:4723/wd/hub");
+		// RemoteWebDriver remoteWebDriver = new RemoteWebDriver(url,
+		// desiredCapabilities);
+
+		// 切换到最新的web视图
+		for (String context : driver.getContextHandles()) {
+			if (context.contains("WebView")) {
+				driver.context(context);
+			}
+		}
+
+		// driver.context("WebView");
+
+		// 切换到最新的web视图
+		// driver.switchTo().window("WebView");
+		int inputnum = 1000;// 设置投资金额，不能使用 float或 double类型
+		String inputnum1 = String.valueOf(inputnum);
+		String code = "1234";
+
+		// driver.context("WEBVIEW");
+		System.out.println(driver.getPageSource());
+		driver.findElementsByClassName("android.widget.EditText").get(0).click();
+		Thread.sleep(4000);
+		driver.hideKeyboard();
+		Thread.sleep(1000);// 必须收起键盘
+
+		driver.findElementByXPath("//android.view.View[contains(@content-desc,'javascript:;')]").click();
+		Thread.sleep(4000);
+		driver.findElementsByClassName("android.widget.EditText").get(0).sendKeys(inputnum1);
+		Thread.sleep(3000);
+		driver.findElementByXPath("//android.view.View[contains(@content-desc,'立即投资')]").click();
+		Thread.sleep(10000);
+		System.out.println(driver.getPageSource());
+		// driver.findElementByXPath("//android.view.View[contains(@content-desc,'获取验证码')]").click();
+		driver.findElementsByClassName("android.widget.Button").get(0);
+	  
+		/*-----------------*/
+		//driver.findElementsByClassName("android.widget.Button").get(0).click();
+		
+		
+		Thread.sleep(4000);// 获取验证码
+		driver.findElementsByClassName("android.widget.EditText").get(0).sendKeys(code);
+		Thread.sleep(3000);// 输入验证码
+		driver.findElementsByClassName("android.widget.Button").get(2).click();
+		Thread.sleep(10000);// 确定
+
+		String inte = driver.findElementsByClassName("android.view.View").get(4).getAttribute("name");// 获取页面显示利息的内容（预计收益：xx.xx元）
+		// driver.findElementByXPath("//android.view.View[contains(@content-desc,'预计收益')]").getText();
+		double inte1 = inputnum * 0.075 * 30 / 365;// 计算实际利息
+		BigDecimal b = new BigDecimal(inte1);
+		double inte2 = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();// 实际利息四色五入取二位小数点
+		System.out.println("inte:" + inte);
+		if (inte.indexOf("：") != -1) {
+
+			inte = inte.substring(inte.indexOf("：") + 1, inte.length() - 1);// 从利息显示的内容中截取利息值
+		} else {
+			System.out.println("没找到");
+		}
+		System.out.println("inte:" + inte);
+		System.out.println("inte2:" + inte2);
+		if (inte.equals(String.valueOf(inte2)))
+			System.out.println("预计收益计算正确");
+		else
+			System.out.println("预计收益计算错误");
+
+		// 在 guinea-pig 页面用 id 和 元素交互。
+		// WebElement div = remoteWebDriver.findElement(By.id("i_am_an_id"));
+		// Assert.assertEquals("I am a div", div.getText()); //验证得到的文本是否正确。
+		// remoteWebDriver.findElement(By.id("html/body/i/footer/inputSum")).click();
+		// Thread.sleep(2000);
+		// driver.findElement(By.id("html/body/i/footer/inputSum")).click();
+		// //填写评论。
+		// Thread.sleep(2000);
+		// driver.findElement(By.id("html/body/i/div/footer/input")).sendKeys("1000");
+		// Thread.sleep(3000);
+		// Thread.sleep(2000);
+		// driver.hideKeyboard();
+		// Thread.sleep(1000);//收起键盘
+		// 离开 webview，回到原生应用。
+		// driver.switchTo().window("NATIVE_APP");
+		Thread.sleep(3000);
+		driver.findElementByXPath("//android.view.View[contains(@content-desc,'查看投资记录')]").click();
+		Thread.sleep(3000);
+		String proid1 = driver.findElementsByClassName("android.view.View").get(6).getAttribute("name");// 投资标的
+		String inputnum2 = driver.findElementsByClassName("android.view.View").get(10).getAttribute("name");// 投资金额
+		String sum = driver.findElementsByClassName("android.view.View").get(14).getAttribute("name");// 本息
+		// double inputnum3 = inputnum*1.00;//因为投资记录中投资金额显示2位小数点故需要转换
+		DecimalFormat df = new DecimalFormat("######0.00");
+		String inputnum3 = df.format(inputnum * 1.00);
+		Thread.sleep(3000);
+		String proidT = pid + " (30天，7.5%) 募集中";
+		double sumT = inputnum + inte2;
+		String sum2 = String.valueOf(sumT) + "元";
+		if (proid1.equals(String.valueOf(proidT)) && inputnum2.equals(String.valueOf(inputnum3) + "元")
+				&& sum.equals(String.valueOf(sum2)))
+			System.out.println("投资记录正确");
+		else
+			System.out.println("投资记录错误");
+		System.out.println("proid1:" + proid1);
+		System.out.println("proidT:" + proidT);
+		System.out.println("inputnum2:" + inputnum2);
+		System.out.println("inputnum3:" + inputnum3);
+		System.out.println("sum:" + sum);
+		System.out.println("sumT:" + sum2);
+		// 投资30天标的并判断投资记录信息展示是否正确
+	}
+
+	@Test
+	// 用例4，测试我的页面资金是否显示正确
+	public void Test_04() throws Exception {
+		Thread.sleep(2000);
+		// DriverUtil.swipeScreen(600.00, 100.00, 100.00, 100.00, 1000, 1,
+		// driver);
+		// Thread.sleep(2000);
+		DriverUtil.swipeScreen(600.00, 100.00, 100.00, 100.00, 1000, 1, driver);
+		Thread.sleep(2000);
+		DriverUtil.swipeScreen(600.00, 100.00, 100.00, 100.00, 1000, 1, driver);
+		Thread.sleep(2000);
+		DriverUtil.swipeScreen(600.00, 100.00, 100.00, 100.00, 1000, 1, driver);
+		Thread.sleep(2000);
+		boolean a1 = true;
+		while (a1) {
+			if (driver.getPageSource().contains("立即体验"))
+
+				a1 = false;
+
+			else
+				DriverUtil.swipeScreen(600.00, 100.00, 100.00, 100.00, 1000, 1, driver);
+
+		}
+
+		driver.findElementById("iv_next").click();
+		Thread.sleep(2000);
+		driver.findElementById("login_phone").sendKeys("186 9999 1399");// 已注册用户登录
+
+		JDBCutil mJDBCutil = new JDBCutil();
+		String mid = mJDBCutil.getres("SELECT mid from guser.user where phone = 18699991399", "mid");// 从此处获取mid，后续从这里一起改
+		Thread.sleep(2000);
+		// driver.findElementById("register_agreement_check").click();//取消勾选我同意
+		// Thread.sleep(2000);
+		driver.findElementById("login_next").click();
+		Thread.sleep(2000);
+		driver.findElementById("login_pwd").sendKeys("123456");// 输入登录密码
+		Thread.sleep(2000);
+		driver.findElementById("login_pwd_btn").click();
+		Thread.sleep(2000);
+		if (driver.getPageSource().contains("跳过")) {
+			System.out.print("登录成功");
+		} else {
+			System.out.print("登录失败");
+		}
+		driver.findElementById("tv_cancel").click();
+		Thread.sleep(3000);
+
+		driver.findElementById("menu_my").click();
+		Thread.sleep(3000);
+		String SQLasset = "select asset from trade.wallet where mid = " + mid;
+		String name = "asset";
+
+		String result = mJDBCutil.getres(SQLasset, name);
+		System.out.print(result);// 数据库中查询总资产
+		String asset2 = driver.findElementById("my_allmoney").getAttribute("name");
+		if (asset2.equals(String.valueOf(result)))
+			System.out.print("总资产获取正确");
+		else
+			System.out.print("总资产获取错误");
+		// String incomeS = mJDBCutil.getres("SELECT income from trade.wallet
+		// where mid = 1905345","income");
+		double income = Double
+				.parseDouble(mJDBCutil.getres("SELECT income from trade.wallet where mid =" + mid, "income"));
+		double asset = Double
+				.parseDouble(mJDBCutil.getres("SELECT asset from trade.wallet where mid =" + mid, "asset"));
+		double gongzi = Double
+				.parseDouble(mJDBCutil.getres("SELECT gongzi from trade.wallet where mid = " + mid, "gongzi"));
+		double expend = Double
+				.parseDouble(mJDBCutil.getres("SELECT expend from trade.wallet where mid = " + mid, "expend"));
+		double penaltyed = Double
+				.parseDouble(mJDBCutil.getres("SELECT penaltyed from trade.wallet where mid = " + mid, "penaltyed"));
+		double penalty = Double
+				.parseDouble(mJDBCutil.getres("SELECT penalty from trade.wallet where mid = " + mid, "penalty"));
+		double fee = Double.parseDouble(mJDBCutil.getres("SELECT fee from trade.wallet where mid = " + mid, "fee"));
+		double repayInterested = Double.parseDouble(
+				mJDBCutil.getres("SELECT repayInterested from trade.wallet where mid =" + mid, "repayInterested"));
+		double repayInterest = Double.parseDouble(
+				mJDBCutil.getres("SELECT repayInterest from trade.wallet where mid = " + mid, "repayInterest"));
+		System.out.println("累计充值：" + income);
+		System.out.println("总资产：" + asset);
+		System.out.println("工资：" + gongzi);
+		System.out.println("累计提现：" + expend);
+		System.out.println("已还罚息：" + penaltyed);
+		System.out.println("待还罚息：" + penalty);
+		System.out.println("平台收费：" + fee);
+		System.out.println("已还利息：" + repayInterested);
+		System.out.println("待还利息：" + repayInterest);
+		double earnA = asset - income - gongzi + expend + penaltyed + penalty + fee + repayInterested + repayInterest;// 计算累计收益
+		BigDecimal E = new BigDecimal(earnA);
+		double earnA1 = E.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();// double类型需要四舍五入
+		System.out.println("计算的累计收益：" + earnA1);
+		String earnA2 = driver.findElementById("my_give_money").getAttribute("name");
+		System.out.println("页面获取的累计收益：" + earnA2);
+		if (earnA2.equals(String.valueOf(earnA1)))
+			System.out.println("累计收益计算正确");
+		else
+			System.out.println("累计收益计算错误");
+		String balance1 = driver.findElementById("my_has_money").getAttribute("name");
+		double balance = Double
+				.parseDouble(mJDBCutil.getres("SELECT balance from trade.wallet where mid = " + mid, "balance"));
+
+		System.out.println("数据库中的闲置资金：" + balance);
+		System.out.println("页面获取的闲置资金：" + balance1);
+		if (balance1.equals(String.valueOf(balance)))
+			System.out.println("闲置资金获取正确");
+		else
+			System.out.println("闲置资金获取错误");
+		int waitpay = Integer.valueOf(mJDBCutil.getres(
+				"SELECT count(*) FROM trade.trade where mid = " + mid + " AND status in (1,3,7) AND state = 1",
+				"count(*)")).intValue();
+		// int waitpay =int.TryParse(mJDBCutil.getres("SELECT count (*) FROM
+		// `trade` where mid = '1905345' AND status in (1,3,7) AND state =
+		// 1","count(*)"));
+		try {
+			driver.findElementById("my_invest_count").getAttribute("name");
+			String waitpay1 = driver.findElementById("my_invest_count").getAttribute("name");
+			System.out.println("计算的待到账：" + waitpay + "笔");
+			if (waitpay1.equals(String.valueOf("待到账" + waitpay + "笔")))
+				System.out.println("待到账笔数计算正确");
+			else
+				System.out.println("待到账笔数显示错误");
+		} catch (Exception e) {
+			System.out.println("没有未到账的记录");
+		}
+
+		int waitcon = Integer
+				.valueOf(mJDBCutil.getres("SELECT count(*) FROM discount.coupon where userId = " + mid, "count(*)"))
+				.intValue();
+		System.out.println("计算的可用红包：" + waitcon + "个");
+		// int waitpay =int.TryParse(mJDBCutil.getres("SELECT count (*) FROM
+		// `trade` where mid = '1905345' AND status in (1,3,7) AND state =
+		// 1","count(*)"));
+		String waitcon1 = driver.findElementById("my_hongbao_count").getAttribute("name");// 获取页面显示的红包，当我的投资没有待到账记录时找不到my_hongbao_count，后续查找原因
+		// driver.findElementByXPath("//android.view.View[contains(@resource
+		// id,'my_hongbao_count')]").click();
+		if (waitcon1.equals(String.valueOf(waitcon + "个红包可用")))
+			System.out.println("未使用红包计算正确");
+		else
+			System.out.println("未使用红包计算错误");
+		int power = Integer
+				.valueOf(mJDBCutil.getres("SELECT powerTotal FROM guser.statistics where mid = " + mid, "powerTotal"))
+				.intValue();
+		String power1 = driver.findElementById("my_gaoshoubi_count").getAttribute("name");
+		System.out.println("数据库获取的高手币总数：" + power + "个");
+		if (power1.equals(String.valueOf(power + "个")))
+			System.out.println("高手币计算正确");
+		else
+			System.out.println("高手币计算错误");
+		driver.findElementById("my_allmoney").click();// 进入我的资产页面
+		Thread.sleep(3000);
+		String totalAsset = driver.findElementById("amount_totalAsset").getAttribute("name");// 我的-总资产页面-总资产显示
+		String inveE = driver.findElementById("amount_dueInPrin").getAttribute("name");// 我的-总资产页面-待到账本息
+		String waitmoneyX1 = driver.findElementById("amount_ldFund").getAttribute("name");// 我的-总资产页面-灵动
+		waitmoneyX1 = waitmoneyX1.substring(waitmoneyX1.indexOf(")") + 2, waitmoneyX1.length());// 我的-总资产页面-灵动
+		String waitmoneyJ1 = driver.findElementById("amount_jzFund").getAttribute("name");// 我的-总资产页面-净值
+		waitmoneyJ1 = waitmoneyJ1.substring(waitmoneyJ1.indexOf(")") + 2, waitmoneyJ1.length());// 我的-总资产页面-净值
+		String waitmoneyH1 = driver.findElementById("amount_haiyingbao").getAttribute("name");// 我的-总资产页面-海盈宝
+		waitmoneyH1 = waitmoneyH1.substring(waitmoneyH1.indexOf(")") + 2, waitmoneyH1.length());// 我的-总资产页面-海盈宝
+		System.out.println("灵动：" + waitmoneyX1);
+		System.out.println("净值：" + waitmoneyJ1);
+		System.out.println("海盈宝：" + waitmoneyH1);
+		// String waitcapital2 = mJDBCutil.getres("SELECT waitCapital from
+		// trade.wallet where mid = "+mid,"waitCapital");
+		// System.out.println("waitcapital2："+waitcapital2);
+
+		double waitcapital = Double.parseDouble(
+				mJDBCutil.getres("SELECT waitCapital from trade.wallet where mid = " + mid, "waitCapital"));// 数据里中的计息中待收本金
+		double freeze = Double
+				.parseDouble(mJDBCutil.getres("SELECT freeze from trade.wallet where mid = " + mid, "freeze"));// 数据里中的募集中待收本金
+		double waitinterest = Double.parseDouble(
+				mJDBCutil.getres("SELECT waitInterest from trade.wallet where mid = " + mid, "waitInterest"));// 数据里中的待收利息
+		double licaijin = Double
+				.parseDouble(mJDBCutil.getres("SELECT licaijin from trade.wallet where mid = " + mid, "licaijin"));
+		double cashBonus = Double
+				.parseDouble(mJDBCutil.getres("SELECT cashBonus from trade.wallet where mid = " + mid, "cashBonus"));
+		double increase = Double
+				.parseDouble(mJDBCutil.getres("SELECT increase from trade.wallet where mid = " + mid, "increase"));
+		double waitcapital2 = waitcapital + freeze + waitinterest + licaijin + cashBonus + increase;// 数据库中的待到账本息之和
+		System.out.println("waitcapital：" + waitcapital2);
+		// String waitinterest2 = mJDBCutil.getres("SELECT waitInterest from
+		// trade.wallet where mid = "+mid,"waitInterest");
+
+		String repaymentX2 = mJDBCutil.getres("SELECT SUM(repayment) from trade.trade WHERE mid =" + mid
+				+ " AND productType = 105 AND STATUS IN (3,4)", "SUM(repayment)");
+		double repaymentX = 0.00;
+		if (repaymentX2 != null)
+			repaymentX = Double.parseDouble(mJDBCutil.getres("SELECT SUM(repayment) from trade.trade WHERE mid =" + mid
+					+ " AND productType = 105 AND STATUS IN (3,4)", "SUM(repayment)"));// 数据库计息中信托宝本金和利息
+
+		String fieldX2 = mJDBCutil.getres("SELECT SUM(field) as amount FROM trade.transfer WHERE mid = " + mid
+				+ " AND tradeId in (SELECT id FROM trade.trade WHERE MID =" + mid
+				+ " AND productType = 105 AND STATUS IN (1,3,4))", "amount");
+		double fieldX;
+		if (fieldX2 != null)
+			fieldX = Double.parseDouble(mJDBCutil.getres("SELECT SUM(field) as amount FROM trade.transfer WHERE mid = "
+					+ mid + " AND tradeId in (SELECT id FROM trade.trade WHERE MID =" + mid
+					+ " AND productType = 105 AND STATUS IN (1,3,4))", "amount"));// 数据库中优惠券收益
+		else
+			fieldX = 0.00;
+		String amountX2 = mJDBCutil.getres(
+				"SELECT SUM(amount) FROM trade.trade WHERE MID = " + mid + " AND productType = 105 AND STATUS IN (1)",
+				"SUM(amount)");
+		double amountX = 0.00;
+		if (amountX2 != null)
+			amountX = Double.parseDouble(mJDBCutil.getres("SELECT SUM(amount) FROM trade.trade WHERE MID = " + mid
+					+ " AND productType = 105 AND STATUS IN (1)", "SUM(amount)"));// 数据库中募集的本金
+
+		String repaymentJ2 = mJDBCutil.getres("SELECT SUM(repayment) from trade.trade WHERE mid =" + mid
+				+ " AND productType = 117 AND STATUS IN (3,4)", "SUM(repayment)");
+		double repaymentJ = 0.00;
+		if (repaymentJ2 != null)
+			repaymentJ = Double.parseDouble(mJDBCutil.getres("SELECT SUM(repayment) from trade.trade WHERE mid =" + mid
+					+ " AND productType = 117 AND STATUS IN (3,4)", "SUM(repayment)"));// 数据库计息中净值宝本金和利息
+
+		String fieldJ2 = mJDBCutil.getres("SELECT SUM(field) as amount FROM trade.transfer WHERE mid = " + mid
+				+ " AND tradeId in (SELECT id FROM trade.trade WHERE MID =" + mid
+				+ " AND productType = 117 AND STATUS IN (1,3,4))", "amount");
+		double fieldJ = 0.00;
+		if (fieldJ2 != null)
+			fieldJ = Double.parseDouble(mJDBCutil.getres("SELECT SUM(field) as amount FROM trade.transfer WHERE mid = "
+					+ mid + " AND tradeId in (SELECT id FROM trade.trade WHERE MID =" + mid
+					+ " AND productType = 117 AND STATUS IN (1,3,4))", "amount"));// 数据库中优惠券收益
+
+		String amountJ2 = mJDBCutil.getres(
+				"SELECT SUM(amount) FROM trade.trade WHERE MID = " + mid + " AND productType = 117 AND STATUS IN (1)",
+				"SUM(amount)");
+		double amountJ = 0.00;
+		if (amountJ2 != null)
+			amountJ = Double.parseDouble(mJDBCutil.getres("SELECT SUM(amount) FROM trade.trade WHERE MID = " + mid
+					+ " AND productType = 117 AND STATUS IN (1)", "SUM(amount)"));// 数据库中募集的本金
+
+		String repaymentH2 = mJDBCutil.getres("SELECT SUM(repayment) from trade.trade WHERE mid =" + mid
+				+ " AND productType = 119 AND STATUS IN (3,4)", "SUM(repayment)");
+		double repaymentH = 0.00;
+		if (repaymentH2 != null)
+			repaymentH = Double.parseDouble(mJDBCutil.getres("SELECT SUM(repayment) from trade.trade WHERE mid =" + mid
+					+ " AND productType = 119 AND STATUS IN (3,4)", "SUM(repayment)"));// 数据库计息中海盈宝本金和利息
+
+		String fieldH2 = mJDBCutil.getres("SELECT SUM(field) as amount FROM trade.transfer WHERE mid = " + mid
+				+ " AND tradeId in (SELECT id FROM trade.trade WHERE MID= " + mid
+				+ " AND productType = 119 AND STATUS IN (1,3,4))", "amount");
+		double fieldH = 0.00;
+		if (fieldH2 != null)
+			fieldH = Double.parseDouble(mJDBCutil.getres("SELECT SUM(field) as amount FROM trade.transfer WHERE mid = "
+					+ mid + " AND tradeId in (SELECT id FROM trade.trade WHERE MID= " + mid
+					+ " AND productType = 119 AND STATUS IN (1,3,4))", "amount"));// 数据库中优惠券收益
+
+		String amountH2 = mJDBCutil.getres(
+				"SELECT SUM(amount) FROM trade.trade WHERE MID = " + mid + " AND productType = 119 AND STATUS IN (1)",
+				"SUM(amount)");
+		double amountH = 0.00;
+		if (amountH2 != null)
+			amountH = Double.parseDouble(mJDBCutil.getres("SELECT SUM(amount) FROM trade.trade WHERE MID = " + mid
+					+ " AND productType = 119 AND STATUS IN (1)", "SUM(amount)"));// 数据库中募集的本金
+
+		double waitmoneyX = repaymentX + fieldX + amountX;
+		double waitmoneyJ = repaymentJ + fieldJ + amountJ;
+		double waitmoneyH = repaymentH + fieldH + amountH;// repayment，field，amount是求和，为0时显示为空，要初始化
+		// double waitall = waitcapital + waitinterest;//根据数据库中的数据计算的待到账本息之和
+		DecimalFormat w = new DecimalFormat("######0.00");
+		String waital2 = w.format(waitcapital2 * 1.00);
+		DecimalFormat w1 = new DecimalFormat("######0.00");
+		String waitmoneyX2 = w1.format(waitmoneyX * 1.00);
+		DecimalFormat w2 = new DecimalFormat("######0.00");
+		String waitmoneyJ2 = w2.format(waitmoneyJ * 1.00);
+		DecimalFormat w3 = new DecimalFormat("######0.00");
+		String waitmoneyH2 = w3.format(waitmoneyH * 1.00);
+		System.out.println("result" + result);
+		System.out.println("waital2：" + waital2);// 数据库转化成2位小数点的待到账本息
+		System.out.println("inveE:" + inveE);
+		System.out.println("totalAsset:" + totalAsset);
+		System.out.println("waitmoneyX:" + waitmoneyX2);// 转化成2位小数点的待到账灵动本息
+		System.out.println("waitmoneyJ:" + waitmoneyJ2);// 转化成2位小数点的待到账净值本息
+		System.out.println("waitmoneyH:" + waitmoneyH2);// 转化成2位小数点的待到账海盈宝本息
+		if (totalAsset.equals(String.valueOf(result)) && inveE.equals(String.valueOf(waital2))
+				&& waitmoneyX1.equals(String.valueOf(waitmoneyX2)) && waitmoneyJ1.equals(String.valueOf(waitmoneyJ2))
+				&& waitmoneyH1.equals(String.valueOf(waitmoneyH2)))
+			System.out.println("Right!");
+		else
+			System.out.println("Oh,something was wrong ~");
+		String shangjin = mJDBCutil
+				.getres("SELECT yongjin+yongjinNeed as shangjin FROM trade.wallet WHERE MID = " + mid, "shangjin");// 数据库中获取待到账佣金
+		String jk = mJDBCutil.getres(
+				"SELECT penalty + repayCapital + repayInterest AS jk from trade.wallet where mid = " + mid, "jk");// 数据库中获取待还款总额
+		String shangjinA = mJDBCutil.getres(
+				"SELECT yongjined+yongjin+yongjinNeed as shangjinA FROM trade.wallet WHERE MID = " + mid, "shangjinA");// 数据库中获取人脉赏金
+		String hongbaoA = mJDBCutil
+				.getres("SELECT licaijin + licaijined + cashBonus + cashBonused + increase + increaseed as hongbaoA FROM trade.wallet WHERE MID = "
+						+ mid, "hongbaoA");// 数据库中获取红包收益
+		String touzisyA = mJDBCutil.getres(
+				"SELECT waitInterest + receiveInterest as touzisyA FROM trade.wallet WHERE MID = " + mid, "touzisyA");// 数据库中获取投资收益
+		driver.findElementById("ntb_horizontal").click();
+		Thread.sleep(2000);
+		String earnB = driver.findElementsByClassName("android.widget.TextView").get(3).getAttribute("name");// 我的资产-累计收益页面的累计收益显示
+		earnB = earnB.substring(earnB.indexOf("）") + 1, earnB.length());
+		String touzisyB = driver.findElementsByClassName("android.widget.TextView").get(4).getAttribute("name");// 我的资产-累计收益页面的投资收益显示
+		touzisyB = touzisyB.substring(touzisyB.indexOf("）") + 1, touzisyB.length());
+		String shangjinB = driver.findElementsByClassName("android.widget.TextView").get(5).getAttribute("name");// 我的资产-累计收益页面的赏金收益显示
+		shangjinB = shangjinB.substring(shangjinB.indexOf("）") + 1, shangjinB.length());
+		String hongbaoB = driver.findElementsByClassName("android.widget.TextView").get(6).getAttribute("name");// 我的资产-累计收益页面的红包收益显示
+		hongbaoB = hongbaoB.substring(hongbaoB.indexOf("）") + 1, hongbaoB.length());
+		String shouyiedB = driver.findElementsByClassName("android.widget.TextView").get(8).getAttribute("name");// 我的资产-累计收益页面的已到账收益显示
+		String shouyiingB = driver.findElementsByClassName("android.widget.TextView").get(10).getAttribute("name");// 我的资产-累计收益页面的待到账收益显示
+		String shouyiedA = mJDBCutil
+				.getres("SELECT  receiveInterest + yongjinNeed + yongjined + licaijined + cashBonused + increaseed  as shouyiedA FROM trade.wallet WHERE MID = "
+						+ mid, "shouyiedA");// 数据库中获已到账收益
+		String shouyiingA = mJDBCutil
+				.getres("SELECT  yongjin + waitInterest + licaijin  + cashBonus + increase  as shouyiedA FROM trade.wallet WHERE MID = "
+						+ mid, "shouyiedA");// 数据库中获待到账收益
+		System.out.println("shangjin：" + shangjin);
+		System.out.println("jk：" + jk);
+		System.out.println("shangjinA：" + shangjinA);
+		System.out.println("hongbaoA：" + hongbaoA);
+		System.out.println("touzisyA：" + touzisyA);
+		System.out.println("earnB：" + earnB);
+		System.out.println("touzisyB：" + touzisyB);
+		System.out.println("shangjinB：" + shangjinB);
+		System.out.println("hongbaoB：" + hongbaoB);
+		System.out.println("shouyiedB：" + shouyiedB);
+		System.out.println("shouyiingB：" + shouyiingB);
+		System.out.println("shouyiedA：" + shouyiedA);
+		System.out.println("shouyiingA：" + shouyiingA);
+		if (shangjinB.equals(shangjinA))
+			System.out.println("赏金计算正确");
+		else
+			System.out.println("赏金计算错误");
+		if (earnB.equals(String.valueOf(earnA1)))
+			System.out.println("累计收益计算正确");
+		else
+			System.out.println("累计收益计算错误");
+		if (touzisyB.equals(touzisyA))
+			System.out.println("投资收益计算正确");
+		else
+			System.out.println("投资收益计算错误");
+		if (hongbaoB.equals(hongbaoA))
+			System.out.println("红包收益计算正确");
+		else
+			System.out.println("红包收益计算错误");
+		if (shouyiedB.equals(shouyiedA))
+			System.out.println("已到账收益计算正确");
+		else
+			System.out.println("已到账收益计算错误");
+		if (shouyiingB.equals(shouyiingA))
+			System.out.println("待到账收益计算正确");
+		else
+			System.out.println("待到账收益计算错误");
+		DriverUtil.swipeScreen(1000.00, 1200.00, 400.00, 1200.00, 1000, 1, driver);// 无法获取到表头闲置资金id,用滑屏进入闲置资金页面
+		Thread.sleep(2000);
+		String balance2 = driver.findElementById("idle_money").getAttribute("name");// 我的-总资产页面-闲置资金显示
+		if (balance2.equals(String.valueOf(balance)))
+			System.out.println("闲置资金获取正确");
+		else
+			System.out.println("闲置资金获取错误");
+		driver.findElementById("idle_out").click();// 提现
+		Thread.sleep(3000);
+	}
+
+	@Test
+	public void Teat_05() throws Exception {
+		Thread.sleep(2000);
+		// DriverUtil.swipeScreen(600.00, 100.00, 100.00, 100.00, 1000, 1,
+		// driver);
+		// Thread.sleep(2000);
+		DriverUtil.swipeScreen(600.00, 100.00, 100.00, 100.00, 1000, 1, driver);
+		Thread.sleep(2000);
+		DriverUtil.swipeScreen(600.00, 100.00, 100.00, 100.00, 1000, 1, driver);
+		Thread.sleep(2000);
+		DriverUtil.swipeScreen(600.00, 100.00, 100.00, 100.00, 1000, 1, driver);
+		Thread.sleep(2000);
+		boolean a1 = true;
+		while (a1) {
+			if (driver.getPageSource().contains("立即体验"))
+
+				a1 = false;
+
+			else
+				DriverUtil.swipeScreen(600.00, 100.00, 100.00, 100.00, 1000, 1, driver);
+
+		}
+
+		driver.findElementById("iv_next").click();
+		Thread.sleep(2000);
+		driver.findElementById("login_phone").sendKeys("186 9999 1399");// 已注册用户登录
+		JDBCutil mJDBCutil = new JDBCutil();
+		String mid = mJDBCutil.getres("SELECT mid from guser.user where phone = 18699991399", "mid");// 从此处获取mid，后续从这里一起改
+		Thread.sleep(2000);
+		// driver.findElementById("register_agreement_check").click();//取消勾选我同意
+		// Thread.sleep(2000);
+		driver.findElementById("login_next").click();
+		Thread.sleep(2000);
+		driver.findElementById("login_pwd").sendKeys("123456");// 输入登录密码
+		Thread.sleep(2000);
+		driver.findElementById("login_pwd_btn").click();
+		Thread.sleep(2000);
+		if (driver.getPageSource().contains("跳过")) {
+			System.out.print("登录成功");
+		} else {
+			System.out.print("登录失败");
+		}
+		driver.findElementById("tv_cancel").click();
+		Thread.sleep(3000);
+
+		driver.findElementById("menu_my").click();
+		Thread.sleep(3000);
+		driver.findElementById("my_deposit").click();// 提现
+		String banlance2 = driver.findElementsByClassName("android.view.View").get(1).getAttribute("name");
+		double banlance = Double
+				.parseDouble(mJDBCutil.getres("SELECT balance from trade.wallet where mid = " + mid, "balance"));
+		if (banlance2.equals(String.valueOf(banlance)))
+			System.out.print("闲置资金显示正确");
+		else
+			System.out.print("闲置资金显示错误");
+		driver.findElementByXPath("//android.view.View[contains(@content-desc,'输入提现金额')]").sendKeys("1000");
+		Thread.sleep(2000);
+		driver.findElementByXPath("//android.widget.Button[contains(@content-desc,'确认提现')]").click();
+		Thread.sleep(2000);
+		driver.findElementByXPath("//android.view.View[contains(@content-desc,'需要资金周转')]").click();
+		Thread.sleep(1000);
+		driver.findElementByXPath("//android.view.View[contains(@content-desc,'确定')]").click();
+		Thread.sleep(5000);
+		driver.findElementsByClassName("android.widget.EditText").get(0).sendKeys("123456");
+		Thread.sleep(1000);
+		driver.findElementsByClassName("android.widget.Button").get(0).click();
+		// driver.findElementById("idle_out").click();//提现
+		Thread.sleep(3000);
+		driver.findElementByXPath("//android.widget.EditText[contains(@content-desc,'请输入短信验证码')]").sendKeys("1234");
+		Thread.sleep(2000);
+		driver.findElementByXPath("//android.widget.Button[contains(@content-desc,'确定')]").click();
+		Thread.sleep(20000);
+		if (driver.getPageSource().contains("完成")) {
+			System.out.println("提现成功");
+		} else {
+			System.out.println("提现失败");
+		}
+		driver.findElementByXPath("//android.widget.Button[contains(@content-desc,'完成')]").click();
+		Thread.sleep(1000);
+		driver.findElementById("my_recharge").click();// 充值
+		Thread.sleep(4000);
+		driver.findElementByXPath("//android.view.View[contains(@content-desc,'请输入充值金额，100元起')]").sendKeys("1000");
+		driver.findElementByXPath("//android.widget.Button[contains(@content-desc,'充值')]").click();
+		Thread.sleep(6000);
+		driver.findElementByXPath("//android.widget.Button[contains(@content-desc,'获取验证码')]").click();
+		Thread.sleep(3000);
+		driver.findElementByXPath("//android.widget.EditText[contains(@content-desc,'请输入短信验证码')]").sendKeys("1234");
+		Thread.sleep(3000);
+		driver.hideKeyboard();
+		Thread.sleep(2000);
+		driver.findElementByXPath("//android.widget.Button[contains(@content-desc,'确定')]").click();
+		Thread.sleep(20000);
+		if (driver.getPageSource().contains("我知道了")) {
+			System.out.println("充值成功");
+		} else {
+			System.out.println("充值失败");
+		}
+		driver.findElementByXPath("//android.view.View[contains(@content-desc,'我知道了')]").click();
+	}
+}
